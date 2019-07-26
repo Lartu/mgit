@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+from subprocess import check_output
+
+VERSION = "1.0"
+
+# Get command line arguments
+args = sys.argv
+args.pop(0)
+
+if len(args) == 0:
+    print(f"\n This is the Multicentralized Git Toolbox (mgit) {VERSION}")
+    print(f" Created by Martín del Río (www.lartu.net).")
+    print(f" Distributed under the MIT license.\n")
+elif len(args) and args[0] == "pushall":
+        gitRemote = check_output(['git', 'remote']).decode('UTF-8')
+        remotes = gitRemote.split("\n")
+        for remote in remotes:
+            remote = remote.strip()
+            if len(remote) == 0:
+                continue
+            gitCommand = f"git push -u {remote} master"
+            print(f"\033[1;32mExecuting:\033[0m {gitCommand}")
+            os.system(gitCommand)
+else:
+    print("Plase use 'git' for non mgit commands")
+    quit(1)
